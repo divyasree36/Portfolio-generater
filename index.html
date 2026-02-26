@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="PortfolioForge — Build stunning professional portfolios with live preview, 8 premium themes, and full customization." />
+  <meta name="keywords" content="portfolio builder, resume, professional portfolio, web portfolio generator" />
+  <meta name="author" content="Divya Sree" />
+  <title>PortfolioForge — Interactive Portfolio Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body data-theme="minimal-light">
+
+  <!-- ========== TOP BAR ========== -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-left">
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle builder panel" aria-expanded="false">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+      <a href="#" class="logo" aria-label="PortfolioForge home">
+        <span class="logo-icon">🔥</span>
+        <span class="logo-text">PortfolioForge</span>
+      </a>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-outline btn-sm ripple" id="clearBtn" aria-label="Clear all data" title="Clear Form">
+        <span>🗑️</span> <span class="btn-label">Clear</span>
+      </button>
+      <button class="btn btn-primary btn-sm ripple" id="downloadBtn" aria-label="Download portfolio"
+        title="Download Portfolio">
+        <span class="btn-text">⬇️ <span class="btn-label">Download</span></span>
+        <span class="btn-spinner" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== MAIN LAYOUT ========== -->
+  <main class="app-layout" id="appLayout">
+
+    <!-- ===== LEFT: BUILDER PANEL ===== -->
+    <aside class="builder-panel" id="builderPanel">
+      <!-- Builder Tabs -->
+      <div class="builder-tabs" role="tablist" aria-label="Builder sections">
+        <button class="tab-btn active" data-tab="personal" role="tab" aria-selected="true">👤 Personal</button>
+        <button class="tab-btn" data-tab="skills" role="tab" aria-selected="false">🛠️ Skills</button>
+        <button class="tab-btn" data-tab="projects" role="tab" aria-selected="false">📁 Projects</button>
+        <button class="tab-btn" data-tab="customize" role="tab" aria-selected="false">🎨 Theme</button>
+      </div>
+
+      <!-- TAB: Personal Info -->
+      <div class="tab-content active" id="tab-personal" role="tabpanel">
+        <div class="form-section">
+          <h3 class="form-section-title">Basic Information</h3>
+          <div class="image-upload-group">
+            <div class="image-preview" id="imagePreview">
+              <span class="image-placeholder">📷</span>
+              <img id="previewImg" alt="Profile" style="display:none;" />
+            </div>
+            <div class="image-upload-actions">
+              <label for="profileImage" class="btn btn-outline btn-xs ripple">Upload Photo</label>
+              <input type="file" id="profileImage" accept="image/*" hidden />
+              <button class="btn btn-ghost btn-xs" id="removeImageBtn" style="display:none;">Remove</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" placeholder="e.g. Divya Sree" maxlength="60" />
+          </div>
+          <div class="form-group">
+            <label for="profTitle">Professional Title</label>
+            <input type="text" id="profTitle" placeholder="e.g. Full Stack Developer" maxlength="80" />
+          </div>
+          <div class="form-group">
+            <label for="bio">Short Bio</label>
+            <textarea id="bio" rows="3" placeholder="Tell the world about yourself..." maxlength="500"></textarea>
+            <span class="char-count" id="bioCharCount">0 / 500</span>
+          </div>
+          <div class="form-group">
+            <label for="yearsExp">Years of Experience</label>
+            <input type="number" id="yearsExp" placeholder="e.g. 5" min="0" max="50" />
+          </div>
+          <div class="form-group">
+            <label for="projectsCount">Projects Completed</label>
+            <input type="number" id="projectsCount" placeholder="e.g. 150" min="0" max="9999" />
+          </div>
+        </div>
+        <div class="form-section">
+          <h3 class="form-section-title">Contact &amp; Links</h3>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="your@email.com" />
+          </div>
+          <div class="form-group">
+            <label for="linkedin">LinkedIn URL</label>
+            <input type="url" id="linkedin" placeholder="https://linkedin.com/in/..." />
+          </div>
+          <div class="form-group">
+            <label for="github">GitHub URL</label>
+            <input type="url" id="github" placeholder="https://github.com/..." />
+          </div>
+          <div class="form-group">
+            <label for="website">Portfolio / Website</label>
+            <input type="url" id="website" placeholder="https://yoursite.com" />
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Skills -->
+      <div class="tab-content" id="tab-skills" role="tabpanel">
+        <div class="form-section">
+          <div class="section-header-row">
+            <h3 class="form-section-title">Your Skills</h3>
+            <span class="badge-count" id="skillCount">0 skills</span>
+          </div>
+          <div class="add-item-row">
+            <input type="text" id="skillNameInput" placeholder="Skill name (e.g. React)" maxlength="40" />
+            <select id="skillLevelInput" aria-label="Proficiency level">
+              <option value="90">Advanced</option>
+              <option value="70" selected>Intermediate</option>
+              <option value="40">Beginner</option>
+            </select>
+            <button class="btn btn-primary btn-xs ripple" id="addSkillBtn" aria-label="Add skill">+ Add</button>
+          </div>
+          <ul class="dynamic-list" id="skillsList" aria-label="Skills list"></ul>
+          <div class="empty-state" id="skillsEmpty">
+            <div class="empty-icon">🎯</div>
+            <p>Add your first skill above</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Projects -->
+      <div class="tab-content" id="tab-projects" role="tabpanel">
+        <div class="form-section">
+          <div class="section-header-row">
+            <h3 class="form-section-title">Your Projects</h3>
+            <span class="badge-count" id="projectCount">0 projects</span>
+          </div>
+          <div class="add-project-form" id="addProjectForm">
+            <div class="form-group">
+              <label for="projTitle">Project Title</label>
+              <input type="text" id="projTitle" placeholder="e.g. E-Commerce App" maxlength="60" />
+            </div>
+            <div class="form-group">
+              <label for="projDesc">Description</label>
+              <textarea id="projDesc" rows="2" placeholder="Brief project description..." maxlength="300"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="projTech">Technologies</label>
+              <input type="text" id="projTech" placeholder="e.g. React, Node.js, MongoDB" maxlength="100" />
+            </div>
+            <div class="form-group">
+              <label for="projLink">Project Link</label>
+              <input type="url" id="projLink" placeholder="https://..." />
+            </div>
+            <button class="btn btn-primary btn-sm ripple btn-full" id="addProjectBtn">+ Add Project</button>
+          </div>
+          <ul class="dynamic-list projects-list" id="projectsList" aria-label="Projects list"></ul>
+          <div class="empty-state" id="projectsEmpty">
+            <div class="empty-icon">🚀</div>
+            <p>Add your first project above</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Customize / Themes -->
+      <div class="tab-content" id="tab-customize" role="tabpanel">
+        <!-- Theme Gallery -->
+        <div class="form-section">
+          <h3 class="form-section-title">Choose Template</h3>
+          <div class="theme-gallery" id="themeGallery">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+        <!-- Custom Colors -->
+        <div class="form-section">
+          <h3 class="form-section-title">Custom Colors</h3>
+          <div class="color-row">
+            <label for="customAccent">Accent Color</label>
+            <div class="color-input-wrap">
+              <input type="color" id="customAccent" value="#6c5ce7" />
+              <span class="color-hex" id="customAccentHex">#6c5ce7</span>
+            </div>
+          </div>
+          <div class="color-row">
+            <label for="customBg">Background</label>
+            <div class="color-input-wrap">
+              <input type="color" id="customBg" value="#fafbfc" />
+              <span class="color-hex" id="customBgHex">#fafbfc</span>
+            </div>
+          </div>
+          <div class="color-row">
+            <label for="customText">Text Color</label>
+            <div class="color-input-wrap">
+              <input type="color" id="customText" value="#1a1a2e" />
+              <span class="color-hex" id="customTextHex">#1a1a2e</span>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm btn-full" id="resetColorsBtn" style="margin-top:10px;">↩️ Reset to Theme
+            Defaults</button>
+        </div>
+        <!-- Font Selection -->
+        <div class="form-section">
+          <h3 class="form-section-title">Font Family</h3>
+          <div class="font-selector" id="fontSelector">
+            <button class="font-chip active" data-font="'Inter', sans-serif"
+              style="font-family:'Inter',sans-serif;">Inter</button>
+            <button class="font-chip" data-font="'Poppins', sans-serif"
+              style="font-family:'Poppins',sans-serif;">Poppins</button>
+            <button class="font-chip" data-font="'Playfair Display', serif"
+              style="font-family:'Playfair Display',serif;">Playfair</button>
+            <button class="font-chip" data-font="'Space Grotesk', sans-serif"
+              style="font-family:'Space Grotesk',sans-serif;">Space</button>
+            <button class="font-chip" data-font="'Outfit', sans-serif"
+              style="font-family:'Outfit',sans-serif;">Outfit</button>
+          </div>
+        </div>
+        <!-- Layout Options -->
+        <div class="form-section">
+          <h3 class="form-section-title">Layout Style</h3>
+          <div class="layout-selector" id="layoutSelector">
+            <button class="layout-chip active" data-layout="standard" title="Standard">
+              <span class="layout-icon">📄</span> Standard
+            </button>
+            <button class="layout-chip" data-layout="centered" title="Centered">
+              <span class="layout-icon">🎯</span> Centered
+            </button>
+            <button class="layout-chip" data-layout="cinematic" title="Cinematic">
+              <span class="layout-icon">🎬</span> Cinematic
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ===== RIGHT: LIVE PREVIEW ===== -->
+    <section class="preview-panel" id="previewPanel">
+      <div class="preview-frame" id="previewFrame">
+
+        <!-- PREVIEW: Nav Bar -->
+        <div class="pv-navbar" id="pvNavbar">
+          <div class="pv-nav-logo" id="pvNavLogo">
+            <span class="pv-nav-logo-icon">◆</span>
+            <span class="pv-nav-logo-text" id="pvNavName">Portfolio</span>
+          </div>
+          <div class="pv-nav-links">
+            <a class="pv-nav-link" href="#pvAboutSection">About</a>
+            <a class="pv-nav-link" href="#pvProjectsSection">Projects</a>
+            <a class="pv-nav-link" href="#pvContactSection">Contact</a>
+          </div>
+        </div>
+
+        <!-- PREVIEW: Hero (Split Layout) -->
+        <div class="pv-hero pv-hero-split" id="pvHero">
+          <div class="pv-hero-overlay"></div>
+          <div class="pv-hero-particles" id="pvHeroParticles"></div>
+          <div class="pv-hero-split-inner">
+            <div class="pv-hero-image-col">
+              <div class="pv-avatar-large" id="pvAvatar">
+                <span class="pv-avatar-placeholder">👤</span>
+                <img id="pvAvatarImg" alt="" style="display:none;" />
+              </div>
+            </div>
+            <div class="pv-hero-text-col">
+              <h1 class="pv-name" id="pvName">Your Name</h1>
+              <p class="pv-title" id="pvTitle">Your Professional Title</p>
+              <p class="pv-hero-bio" id="pvHeroBio">Your bio will appear here...</p>
+              <div class="pv-stats-row" id="pvStatsRow"></div>
+              <div class="pv-social" id="pvSocial"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PREVIEW: Action Buttons Row -->
+        <div class="pv-action-bar" id="pvActionBar">
+          <a class="pv-action-btn" id="pvActionEmail" href="mailto:">📧 Email Me</a>
+          <a class="pv-action-btn" id="pvActionLinkedin" href="#" style="display:none;">🔗 LinkedIn</a>
+          <a class="pv-action-btn" id="pvActionGithub" href="#" style="display:none;">💻 GitHub</a>
+          <a class="pv-action-btn" id="pvActionWebsite" href="#" style="display:none;">🌐 Website</a>
+          <a class="pv-action-btn pv-action-primary" id="pvActionDownload" href="#">📄 Download CV</a>
+        </div>
+
+        <!-- PREVIEW: About -->
+        <div class="pv-section pv-animate-in" id="pvAboutSection">
+          <h2 class="pv-section-title">About Me</h2>
+          <p class="pv-bio" id="pvBio">Your bio will appear here. Start typing in the builder panel to see it come
+            alive!</p>
+          <div class="pv-contact-row" id="pvContactRow"></div>
+        </div>
+
+        <!-- PREVIEW: Skills -->
+        <div class="pv-section pv-animate-in" id="pvSkillsSection">
+          <h2 class="pv-section-title">Skills</h2>
+          <div class="pv-skills-grid" id="pvSkillsGrid">
+            <div class="pv-empty-hint">Add skills in the builder to see them here</div>
+          </div>
+        </div>
+
+        <!-- PREVIEW: Project Carousel -->
+        <div class="pv-section pv-carousel-section pv-animate-in" id="pvCarouselSection">
+          <h2 class="pv-section-title">Featured Work</h2>
+          <div class="pv-carousel-wrap">
+            <button class="pv-carousel-arrow pv-carousel-prev" id="pvCarouselPrev" aria-label="Previous">‹</button>
+            <div class="pv-carousel-track" id="pvCarouselTrack">
+              <div class="pv-empty-hint">Add projects in the builder to see them here</div>
+            </div>
+            <button class="pv-carousel-arrow pv-carousel-next" id="pvCarouselNext" aria-label="Next">›</button>
+          </div>
+        </div>
+
+        <!-- PREVIEW: Projects Grid -->
+        <div class="pv-section pv-animate-in" id="pvProjectsSection">
+          <h2 class="pv-section-title">Projects</h2>
+          <div class="pv-projects-grid" id="pvProjectsGrid">
+            <div class="pv-empty-hint">Add projects in the builder to see them here</div>
+          </div>
+        </div>
+
+        <!-- PREVIEW: References / Testimonials -->
+        <div class="pv-section pv-animate-in" id="pvReferencesSection">
+          <h2 class="pv-section-title">References</h2>
+          <div class="pv-references-grid" id="pvReferencesGrid">
+            <div class="pv-ref-card">
+              <div class="pv-ref-quote">"An exceptional developer who delivers quality work on time."</div>
+              <div class="pv-ref-author">— Project Manager</div>
+            </div>
+            <div class="pv-ref-card">
+              <div class="pv-ref-quote">"Great collaborator with strong technical skills and attention to detail."</div>
+              <div class="pv-ref-author">— Team Lead</div>
+            </div>
+            <div class="pv-ref-card">
+              <div class="pv-ref-quote">"Brought innovative solutions and exceeded expectations consistently."</div>
+              <div class="pv-ref-author">— Client</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PREVIEW: Contact -->
+        <div class="pv-section pv-contact-section pv-animate-in" id="pvContactSection">
+          <h2 class="pv-section-title">Get In Touch</h2>
+          <p class="pv-contact-text" id="pvContactText">Feel free to reach out!</p>
+          <a class="pv-contact-btn" id="pvContactBtn" href="mailto:">Send Email</a>
+        </div>
+
+        <!-- PREVIEW: Footer -->
+        <div class="pv-footer" id="pvFooter">
+          <div class="pv-footer-inner">
+            <div class="pv-footer-logo">
+              <span class="pv-nav-logo-icon">◆</span>
+              <span id="pvFooterName">Your Name</span>
+            </div>
+            <div class="pv-footer-links" id="pvFooterLinks"></div>
+            <p class="pv-footer-copy">&copy; 2026 <span id="pvFooterCopy">Your Name</span>. All rights reserved.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
